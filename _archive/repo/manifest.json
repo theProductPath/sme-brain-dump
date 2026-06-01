@@ -1,0 +1,9 @@
+{
+  "name": "SME Brain Dump",
+  "mode": "static-web-app",
+  "stub": "app.html",
+  "landing": "index.html",
+  "example": "example.html",
+  "live": "live.html",
+  "apiProviders": ["anthropic", "openai", "elevenlabs"]
+}

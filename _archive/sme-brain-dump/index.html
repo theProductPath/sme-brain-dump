@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SME Brain Dump</title>
+  <meta name="description" content="An AI-powered interview experience that turns one expert conversation into a usable Knowledge Package." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{--color-bg:#181d26;--color-surface:#222831;--color-card:#2a303c;--color-card-hover:#30374a;--color-primary:#c75c2a;--color-primary-hover:#a84a20;--color-primary-subtle:rgba(199,92,42,0.12);--color-primary-text:#e8865a;--color-text:#e4eaf4;--color-text-muted:#8895aa;--color-text-disabled:#555f70;--color-text-on-primary:#ffffff;--color-border:#2e3848;--color-border-strong:#3d4a5c;--font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--font-mono:'JetBrains Mono','Fira Code','Courier New',monospace;--radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-xl:16px;--radius-full:9999px;--shadow-sm:0 1px 3px rgba(0,0,0,0.3);--shadow-md:0 4px 12px rgba(0,0,0,0.4);--shadow-lg:0 8px 24px rgba(0,0,0,0.5);--shadow-primary:0 4px 16px rgba(199,92,42,0.25)}
+    *{box-sizing:border-box}body{margin:0;font-family:var(--font-sans);background:var(--color-bg);color:var(--color-text);line-height:1.6}a{color:inherit;text-decoration:none}header,section,footer{max-width:1120px;margin:0 auto;padding:0 24px}nav{position:sticky;top:0;z-index:20;background:rgba(24,29,38,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--color-border)}.nav-inner{display:flex;align-items:center;justify-content:space-between;min-height:72px}.brand{display:flex;align-items:center;gap:12px;font-weight:700}.brand-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--color-primary),#7a3c1f);box-shadow:var(--shadow-primary);display:grid;place-items:center;color:white;font-size:18px}.nav-links a{margin-left:16px;color:var(--color-text-muted)}.hero{padding:72px 24px 36px;display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:center}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--color-border);border-radius:var(--radius-full);color:var(--color-primary-text);background:var(--color-primary-subtle);font-size:13px}.hero h1{font-size:56px;line-height:1.02;margin:18px 0 16px;letter-spacing:-.04em}.hero p{font-size:18px;color:var(--color-text-muted);max-width:58ch}.buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}.btn{padding:13px 18px;border-radius:var(--radius-md);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);font-weight:600;box-shadow:var(--shadow-sm)}.btn.primary{background:var(--color-primary);border-color:transparent;color:var(--color-text-on-primary)}.btn.primary:hover{background:var(--color-primary-hover)}.hero-card{background:linear-gradient(180deg,var(--color-card),var(--color-surface));border:1px solid var(--color-border);border-radius:24px;padding:22px;box-shadow:var(--shadow-lg)}.hero-visual{border-radius:20px;min-height:360px;background:radial-gradient(circle at top left,rgba(199,92,42,.28),transparent 38%),linear-gradient(135deg,#2f3848,#1c2330);border:1px solid var(--color-border-strong);padding:24px;display:flex;flex-direction:column;justify-content:space-between}.hero-visual .window{background:rgba(24,29,38,.7);border:1px solid var(--color-border);border-radius:16px;padding:16px}.bubble{padding:12px 14px;border-radius:16px;margin:10px 0;max-width:85%}.bubble.ai{background:rgba(199,92,42,.14);border:1px solid rgba(199,92,42,.25)}.bubble.user{margin-left:auto;background:rgba(136,149,170,.12);border:1px solid var(--color-border)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.section{padding:36px 24px}.card{background:var(--color-card);border:1px solid var(--color-border);border-radius:20px;padding:22px;box-shadow:var(--shadow-sm)}.card:hover{background:var(--color-card-hover)}h2{font-size:34px;margin:0 0 14px;letter-spacing:-.03em}h3{margin:0 0 8px}.muted{color:var(--color-text-muted)}pre,code{font-family:var(--font-mono)}pre{overflow:auto;background:#151a22;border:1px solid var(--color-border);padding:16px;border-radius:16px}.split{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.footer{padding:34px 24px 56px;border-top:1px solid var(--color-border);margin-top:30px;color:var(--color-text-muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.pill{display:inline-flex;padding:4px 10px;border-radius:999px;background:rgba(199,92,42,.12);color:var(--color-primary-text);font-size:12px}.small{font-size:14px}.screenshot{width:100%;border-radius:18px;border:1px solid var(--color-border)}@media (max-width:900px){.hero,.grid,.split{grid-template-columns:1fr}.hero h1{font-size:42px}.nav-links{display:none}}
+  </style>
+</head>
+<body>
+  <nav>
+    <header class="nav-inner">
+      <div class="brand"><div class="brand-mark">🧠</div><div>SME Brain Dump</div></div>
+      <div class="nav-links"><a href="#what">What</a><a href="#how">How</a><a href="#example">Example</a><a href="#repo" target="_blank" rel="noreferrer">GitHub</a></div>
+    </header>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div>
+        <span class="eyebrow">tPP product, stub mode ready</span>
+        <h1>Turn one expert conversation into a Knowledge Package.</h1>
+        <p>SME Brain Dump captures a subject matter expert’s institutional knowledge before a transition, then turns it into a successor brief, FAQ, decision log, and runbook.</p>
+        <div class="buttons">
+          <a class="btn primary" href="#example">View example scenario</a>
+          <a class="btn" href="./README.md">Read the repo guide</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-visual">
+          <div class="window">
+            <div class="pill">Stub mode</div>
+            <div class="bubble ai">What breaks if you’re out for two weeks?</div>
+            <div class="bubble user">The nightly DAG rerun and the vendor escalation path.</div>
+            <div class="bubble ai">Got it. I’m turning that into a runbook step.</div>
+          </div>
+          <div class="small muted">Knowledge Package generated from a 20-minute interview.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="what">
+      <h2>What this is</h2>
+      <div class="grid">
+        <div class="card"><h3>Structured interview</h3><p class="muted">A conversational flow with branching follow-ups, not a form.</p></div>
+        <div class="card"><h3>Zero-config stub mode</h3><p class="muted">Open the repo and run the full experience with no API keys.</p></div>
+        <div class="card"><h3>Live-mode ready</h3><p class="muted">Settings for Claude, GPT, and ElevenLabs can be wired in cleanly.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <h2>How it works</h2>
+      <div class="split">
+        <div class="card"><h3>1. Interview</h3><p class="muted">The app asks targeted questions and captures answers in transcript form.</p></div>
+        <div class="card"><h3>2. Synthesize</h3><p class="muted">Answers are organized into successor-ready knowledge artifacts.</p></div>
+      </div>
+      <div style="height:18px"></div>
+      <div class="split">
+        <div class="card"><h3>3. Export</h3><p class="muted">You get a Knowledge Package with all four docs, ready to hand off.</p></div>
+        <div class="card"><h3>4. Extend</h3><p class="muted">Flip into live mode later without changing the user flow.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="example">
+      <h2>Example scenario</h2>
+      <div class="card">
+        <img class="screenshot" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'><rect width='1200' height='630' fill='%23181d26'/><rect x='72' y='72' width='1056' height='486' rx='28' fill='%23222831' stroke='%232e3848'/><text x='120' y='170' fill='%23e4eaf4' font-family='Inter,Arial,sans-serif' font-size='54' font-weight='700'>Sally Chen</text><text x='120' y='220' fill='%238895aa' font-family='Inter,Arial,sans-serif' font-size='28'>Data Pipeline Owner</text><rect x='120' y='280' width='960' height='42' rx='21' fill='%23c75c2a' fill-opacity='.18'/><text x='150' y='309' fill='%23e8865a' font-family='Inter,Arial,sans-serif' font-size='22'>Complete transcript + Successor Brief + FAQ + Decision Log + Runbook</text></svg>" alt="Sally Chen example" />
+        <p class="muted">The repo ships with a complete Sally Chen handoff, including transcript and all four generated docs.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="repo">
+    <div>A product of theProductPath</div>
+    <div><a href="https://github.com/theProductPath/sme-brain-dump" target="_blank" rel="noreferrer">GitHub repo</a></div>
+  </footer>
+</body>
+</html>

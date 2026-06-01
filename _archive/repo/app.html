@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SME Brain Dump App</title>
+  <style>
+    :root{--bg:#f5f7fb;--surface:#fff;--text:#142033;--muted:#617089;--border:#d8e0eb;--primary:#c75c2a;--primary2:#a84a20;--good:#117a5b;--bad:#a13a3a;--radius:16px;--shadow:0 12px 30px rgba(20,32,51,.08)}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:linear-gradient(180deg,#fff, #f3f6fb);color:var(--text)}.wrap{max-width:1180px;margin:0 auto;padding:24px}.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:18px}.brand{font-weight:700;font-size:20px}.pill{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}.hero h1{margin:0 0 8px;font-size:32px}.hero p,.muted{color:var(--muted)}.steps{display:grid;gap:12px;margin-top:16px}.step{padding:14px;border:1px solid var(--border);border-radius:14px;background:#fbfcfe}.step strong{display:block;margin-bottom:4px}.q{font-size:18px;font-weight:600;margin:8px 0 14px}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip,.btn{border-radius:999px;border:1px solid var(--border);padding:10px 14px;background:#fff;font:inherit;cursor:pointer}.chip.active,.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.transcript{height:190px;overflow:auto;border:1px solid var(--border);border-radius:12px;padding:12px;background:#fcfdff}.entry{margin:0 0 10px}.entry b{color:var(--primary2)}.doc{margin-top:12px;border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}.doc h4{margin:0 0 6px}.sidebar{display:grid;gap:12px}.kv{display:grid;gap:8px}.kv label{font-size:12px;color:var(--muted)}.kv input,.kv select,.kv textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:12px;font:inherit}.footer-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.badge{padding:4px 8px;border-radius:999px;background:#eef3fb;color:var(--muted);font-size:12px}.ok{color:var(--good)}.warn{color:var(--bad)}@media (max-width:900px){.grid{grid-template-columns:1fr}.hero h1{font-size:28px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><div class="brand">SME Brain Dump</div><div class="pill">Stub + live architecture, zero-config demo ready</div></div>
+    <div class="grid">
+      <section class="card hero">
+        <div class="badge">Stub mode</div>
+        <h1>Interview the SME. Ship the handoff.</h1>
+        <p>Branching questions, transcript capture, and four generated knowledge-package docs, all in one file.</p>
+        <div class="steps">
+          <div class="step"><strong>1. Ask</strong> AI prompt + follow-up path from the scenario.</div>
+          <div class="step"><strong>2. Capture</strong> SME answers build a transcript in real time.</div>
+          <div class="step"><strong>3. Export</strong> Successor Brief, FAQ, Decision Log, and Runbook render instantly.</div>
+        </div>
+        <div class="q" id="question"></div>
+        <div class="chips" id="choices"></div>
+        <div class="footer-actions">
+          <button class="btn primary" id="nextBtn">Answer + next</button>
+          <button class="btn" id="resetBtn">Restart scenario</button>
+        </div>
+      </section>
+      <aside class="sidebar">
+        <section class="card">
+          <div class="badge">Scenario</div>
+          <h3>Sally Chen, Data Pipeline Owner</h3>
+          <div class="muted">Transitioning out after three years of owning the nightly ingest, alerting, and recovery work.</div>
+          <div class="kv" style="margin-top:12px">
+            <label>Answer</label><textarea id="answer" rows="5" placeholder="Type the SME response here..."></textarea>
+          </div>
+          <div class="kv" style="margin-top:10px">
+            <label>Mode</label><select id="mode"><option>Stub</option><option>Live (wired later)</option></select>
+          </div>
+        </section>
+        <section class="card">
+          <div class="badge">Transcript</div>
+          <div class="transcript" id="transcript"></div>
+        </section>
+      </aside>
+    </div>
+    <section class="card" style="margin-top:18px">
+      <div class="badge">Knowledge Package</div>
+      <div class="grid" style="grid-template-columns:repeat(2,1fr);margin-top:12px">
+        <div class="doc"><h4>Successor Brief</h4><div id="brief"></div></div>
+        <div class="doc"><h4>FAQ</h4><div id="faq"></div></div>
+        <div class="doc"><h4>Decision Log</h4><div id="log"></div></div>
+        <div class="doc"><h4>Runbook</h4><div id="runbook"></div></div>
+      </div>
+    </section>
+  </div>
+  <script>
+    const steps=[{q:'What actually breaks if you are out for a day?',a:'If I am out, the 1:20am ingest can stall on schema drift. The alert goes to a stale rotation unless we refresh the on-call list, and finance notices by 8am.'},{q:'What is the first thing a successor needs to know?',a:'Treat the Airbyte sync and dbt run as one chain. If one is green and the other is red, do not assume the pipeline is healthy.'},{q:'What judgment call have you made that is not in the docs?',a:'I suppress flaky low-volume alerts on weekends, but only after checking for a vendor incident and posting in #data-ops.'},{q:'What are the first-week actions for the new owner?',a:'Shadow one on-call cycle, verify the alert matrix, and practice a rollback in staging before touching production.'}];
+    const transcript=[]; let i=0; const q=document.getElementById('question'), choices=document.getElementById('choices'), answer=document.getElementById('answer');
+    const sampleChoices=['Use current answer','Add a concrete example','Ask about edge cases'];
+    function render(){const s=steps[i]; q.textContent=s.q; choices.innerHTML=sampleChoices.map((c,n)=>`<button class="chip ${n===0?'active':''}" data-i="${n}">${c}</button>`).join(''); answer.value=s.a;}
+    function push(role,text){transcript.push({role,text}); document.getElementById('transcript').innerHTML=transcript.map(x=>`<p class="entry"><b>${x.role}:</b> ${x.text}</p>`).join('');}
+    function docs(){document.getElementById('brief').innerHTML='<p>Owns nightly ingest, alert triage, and recovery. Key risk: schema drift and stale on-call data. First week: shadow one cycle and rehearse rollback.</p>';document.getElementById('faq').innerHTML='<p><b>Q:</b> What happens when an alert fires? <br><b>A:</b> Check Airbyte, dbt, then PagerDuty routing. <br><b>Q:</b> What is the hidden dependency? <br><b>A:</b> The alert matrix and vendor status checks.</p>';document.getElementById('log').innerHTML='<p>Suppress weekend noise only after validating no vendor incident. Ask Sally if a line item is ambiguous. The team uses Slack #data-ops for escalation.</p>';document.getElementById('runbook').innerHTML='<p>1) Open alert dashboard. 2) Check ingest health. 3) Confirm dbt completion. 4) Re-run failed jobs. 5) Post status update. 6) Escalate after 15 minutes.</p>';}
+    document.getElementById('nextBtn').onclick=()=>{const s=steps[i]; const txt=answer.value.trim()||s.a; push('SME',txt); if(i<steps.length-1){push('AI',steps[i+1].q); i++; render();} else {push('AI','Interview complete, generating the Knowledge Package.'); docs(); document.getElementById('nextBtn').disabled=true; document.getElementById('nextBtn').textContent='Complete';}};
+    document.getElementById('resetBtn').onclick=()=>{i=0; transcript.length=0; document.getElementById('transcript').innerHTML=''; document.getElementById('nextBtn').disabled=false; document.getElementById('nextBtn').textContent='Answer + next'; render(); docs(); push('AI',steps[0].q);};
+    choices.addEventListener('click',e=>{if(e.target.matches('button')) answer.value=steps[i].a + ' ' + ['Use current answer','Add a concrete example','Ask about edge cases'][e.target.dataset.i];});
+    render(); docs(); push('AI',steps[0].q);
+  </script>
+</body>
+</html>
