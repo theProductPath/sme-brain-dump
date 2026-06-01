@@ -99,7 +99,7 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
       // message.source is either 'user' or 'agent'
       const role = message.source === "user" ? "SME" : "AI";
       // Ignore partial/non-final speech updates to prevent cluttering
-      
+      if (message.source === "user" && !message.isFinal) return;
 
       setMessages((prev) => [
         ...prev.filter(m => m.text !== "..."), // remove typing placeholder
@@ -109,7 +109,7 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
     onError: (error) => {
       console.error("ElevenLabs Error:", error);
       setStatusText("Connection Error");
-      setMessages((prev) => [...prev, { role: "system", text: `Connection Error: ${typeof error === "string" ? error : (error as any).message || "Failed call."}` }]);
+      setMessages((prev) => [...prev, { role: "system", text: `Connection Error: ${error.message || "Failed call."}` }]);
       setSessionActive(false);
     },
   });
@@ -170,8 +170,7 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
         setSessionActive(false);
         finalTranscript = [...messages];
       } else {
-        const id = conversation.getId();
-        await conversation.endSession();
+        const id = await conversation.endSession();
         setSessionActive(false);
         setStatusText("Session completed.");
 
