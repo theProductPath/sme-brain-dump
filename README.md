@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SME Brain Dump
 
-## Getting Started
+An AI-powered interview experience for role transitions that captures institutional knowledge from subject matter experts.
 
-First, run the development server:
+## The Problem
+When a key subject matter expert (SME) leaves a role, critical institutional knowledge walks out the door with them. Standard handovers are often rushed, incomplete documents or scattered notes. The successor is left to figure out the undocumented realities of the job through trial and error.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+A good handover shouldn't rely on the departing employee guessing what's important. It needs an active, structured extraction process.
+
+## What is this?
+This is a Next.js application that turns an advanced LLM and voice AI into an **Automated Knowledge Interviewer**.
+
+It facilitates a conversational "brain dump" with the departing SME, capturing deep context, and automatically synthesizes it into a structured, usable Knowledge Package.
+
+## How it Works
+
+**1. The Interview (Voice or Text)**  
+The SME engages in a guided conversation. The AI dynamically asks probing questions about their daily responsibilities, unspoken rules, critical relationships, and historical context. (Includes a "Live" mode with real-time AI and a "Stub" mode for demonstrations without API keys).
+
+**2. The Synthesis**  
+The application processes the conversation and extracts the core knowledge, organizing it into structured artifacts.
+
+**3. The Deliverables**  
+It generates a comprehensive Knowledge Package including:
+- **Successor Brief**: The 10,000-foot view.
+- **FAQ**: Common questions and nuanced answers.
+- **Decision Log**: Why things were built the way they were.
+- **Runbook**: Step-by-step processes for critical tasks.
+
+## Repository Structure
+```text
+sme-brain-dump/
+├── src/
+│   ├── app/                # Next.js App Router (pages and layouts)
+│   └── components/         # React components (LiveInterview, StubInterview, SettingsDrawer)
+├── _archive/               # Original HTML prototype, example scenario, and planning docs
+├── package.json            # Project dependencies and scripts
+└── sync-drive.sh           # Script to sync local git with the Google Drive canonical folder
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Quick Start
+1. Navigate to the project directory (`~/dev/sme-brain-dump`).
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up your environment variables (or enter them in the Settings Drawer in the UI). You will need:
+   - Google Gemini API Key
+   - ElevenLabs API Key
+   *(Note: You can run "Stub mode" without keys for a purely front-end demo)*
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+5. Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment & Syncing
+This project is configured for deployment to platforms like Railway (`sme-brain-dump-production.up.railway.app`).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To push your local updates to GitHub and simultaneously sync your changes back to the canonical Google Drive products folder, run:
+```bash
+npm run sync
+```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Philosophy
+This kit is part of the product methodology by theProductPath. It emphasizes capturing high-value qualitative data through conversational interfaces and transforming it into structured, actionable business artifacts.
