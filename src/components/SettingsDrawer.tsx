@@ -44,14 +44,22 @@ export function SettingsDrawer({ isOpen, onClose, onSave }: SettingsDrawerProps)
   };
 
   const handleSave = () => {
+    const trimmedSettings = {
+      elevenLabsApiKey: settings.elevenLabsApiKey.trim(),
+      elevenLabsAgentId: settings.elevenLabsAgentId.trim(),
+      geminiApiKey: settings.geminiApiKey.trim(),
+      openAiApiKey: settings.openAiApiKey.trim(),
+      anthropicApiKey: settings.anthropicApiKey.trim(),
+    };
+    
     if (typeof window !== "undefined") {
-      localStorage.setItem("tpp_elevenlabs_key", settings.elevenLabsApiKey);
-      localStorage.setItem("tpp_elevenlabs_agent", settings.elevenLabsAgentId);
-      localStorage.setItem("tpp_gemini_key", settings.geminiApiKey);
-      localStorage.setItem("tpp_openai_key", settings.openAiApiKey);
-      localStorage.setItem("tpp_anthropic_key", settings.anthropicApiKey);
+      localStorage.setItem("tpp_elevenlabs_key", trimmedSettings.elevenLabsApiKey);
+      localStorage.setItem("tpp_elevenlabs_agent", trimmedSettings.elevenLabsAgentId);
+      localStorage.setItem("tpp_gemini_key", trimmedSettings.geminiApiKey);
+      localStorage.setItem("tpp_openai_key", trimmedSettings.openAiApiKey);
+      localStorage.setItem("tpp_anthropic_key", trimmedSettings.anthropicApiKey);
     }
-    onSave(settings);
+    onSave(trimmedSettings);
     onClose();
   };
 
