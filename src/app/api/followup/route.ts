@@ -33,6 +33,7 @@ Below is the current dialogue transcript so far. Analyze what has been said, fin
 - Keep your question warm, clear, and highly focused.
 - Your question MUST be under 40 words.
 - Do NOT include any intro or conversational filler (e.g. "Got it.", "That makes sense."). Speak directly as the interviewer.
+- CRITICAL: DO NOT repeat or rephrase a question that has already been asked in the transcript. Always move the conversation forward to a new, unexplored operational dependency or risk.
 
 TRANSCRIPT SO FAR:
 ${transcriptString}
