@@ -30,10 +30,11 @@ export async function POST(request: Request) {
 The role context: ${customRoleInfo || "General subject matter expert transition"}.
 
 Below is the current dialogue transcript so far. Analyze what has been said, find the key unwritten operational dependencies, workarounds, or risks that need clarification, and generate exactly ONE single, conversational follow-up question to probe deeper.
+
 - Keep your question warm, clear, and highly focused.
 - Your question MUST be under 40 words.
 - Do NOT include any intro or conversational filler (e.g. "Got it.", "That makes sense."). Speak directly as the interviewer.
-- CRITICAL: DO NOT repeat or rephrase a question that has already been asked in the transcript. Always move the conversation forward to a new, unexplored operational dependency or risk.
+- CRITICAL INSTRUCTION: You MUST change the subject or angle from the previous question. Look at the last question asked by the AI, and deliberately ask about a DIFFERENT area of the SME's responsibilities, a DIFFERENT risk, or a DIFFERENT undocumented process. Do NOT ask about the exact same system or scenario again.
 
 TRANSCRIPT SO FAR:
 ${transcriptString}
