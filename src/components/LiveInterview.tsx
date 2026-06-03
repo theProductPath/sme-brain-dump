@@ -380,7 +380,7 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
   return (
     <div>
       {/* ── STAGE 0: SETUP ROLE ── */}
-      {backupStep === 0 && !hasFinishedPackage && (
+      {!sessionActive && backupStep === 0 && !hasFinishedPackage && (
         <div className="card wizard-box">
           <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
