@@ -143,7 +143,7 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to get authenticated session URL.");
+        const errData = await res.json().catch(() => ({})); throw new Error(errData.error || "Failed to get authenticated session URL.");
       }
 
       const { signed_url } = await res.json();

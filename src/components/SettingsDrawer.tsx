@@ -46,7 +46,7 @@ export function SettingsDrawer({ isOpen, onClose, onSave }: SettingsDrawerProps)
   const handleSave = () => {
     const trimmedSettings = {
       elevenLabsApiKey: settings.elevenLabsApiKey.trim(),
-      elevenLabsAgentId: settings.elevenLabsAgentId.trim(),
+      elevenLabsAgentId: settings.elevenLabsAgentId.replace(/^Agent ID\s+/i, "").trim(),
       geminiApiKey: settings.geminiApiKey.trim(),
       openAiApiKey: settings.openAiApiKey.trim(),
       anthropicApiKey: settings.anthropicApiKey.trim(),
