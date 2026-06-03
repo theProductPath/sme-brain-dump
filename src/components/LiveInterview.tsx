@@ -204,6 +204,28 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
   };
 
   // Submit Answer in Backup/Gemini Dynamic Mode
+  
+  const handleSendElevenLabsText = () => {
+    const text = answers.currentInput.trim();
+    if (!text) return;
+    
+    try {
+      if (conversation.sendUserMessage) {
+        conversation.sendUserMessage(text);
+      } else if ((conversation as any).sendText) {
+        (conversation as any).sendText(text);
+      }
+      
+      setMessages((prev) => [
+        ...prev,
+        { role: "SME", text: text }
+      ]);
+      setAnswers((prev) => ({ ...prev, currentInput: "" }));
+    } catch (err) {
+      console.error("Failed to send text to ElevenLabs", err);
+    }
+  };
+
   const submitBackupAnswer = async () => {
     const userText = answers.currentInput.trim();
     if (!userText) return;
@@ -433,6 +455,7 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
               </div>
             </div>
 
+            
             <div className="chat-transcript-box" ref={scrollRef}>
               {messages.map((m, idx) => (
                 <div key={idx} className={`chat-bubble ${m.role}`}>
@@ -440,6 +463,33 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
                 </div>
               ))}
             </div>
+
+            <div className="kv-item" style={{ marginTop: "16px" }}>
+              <label>Your Response (Speak via Mic, or Type)</label>
+              <div className="input-container">
+                <textarea
+                  className="input-textarea"
+                  value={answers.currentInput}
+                  onChange={(e) => setAnswers(prev => ({ ...prev, currentInput: e.target.value }))}
+                  placeholder="You can simply speak to the agent, or type a response and send..."
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendElevenLabsText();
+                    }
+                  }}
+                />
+                <button
+                  className="btn btn-primary btn-sm"
+                  style={{ marginLeft: "8px", alignSelf: "center", padding: "12px 16px", borderRadius: "8px" }}
+                  onClick={handleSendElevenLabsText}
+                  disabled={!answers.currentInput.trim()}
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+
           </div>
 
           <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "16px" }}>
