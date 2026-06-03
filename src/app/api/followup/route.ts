@@ -1,27 +1,26 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 
 export async function POST(request: Request) {
   try {
-    const { transcript, geminiApiKey, customRoleInfo } = await request.json();
+    const { transcript, geminiApiKey, openAiApiKey, anthropicApiKey, customRoleInfo } = await request.json();
 
     if (!transcript || transcript.length === 0) {
       return NextResponse.json({ error: "Transcript is empty" }, { status: 400 });
     }
 
-    const apiKey = geminiApiKey || process.env.GEMINI_API_KEY;
+    const gApiKey = geminiApiKey || process.env.GEMINI_API_KEY;
+    const oApiKey = openAiApiKey || process.env.OPENAI_API_KEY;
+    const aApiKey = anthropicApiKey || process.env.ANTHROPIC_API_KEY;
 
-    if (!apiKey) {
+    if (!gApiKey && !oApiKey && !aApiKey) {
       return NextResponse.json(
-        { error: "Gemini API Key is required to generate follow-up questions" },
+        { error: "An API Key (Gemini, OpenAI, or Anthropic) is required to generate follow-up questions" },
         { status: 400 }
       );
     }
-
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
-    });
 
     const transcriptString = transcript
       .map((t: any) => `${t.role}: ${t.text}`)
@@ -40,8 +39,29 @@ ${transcriptString}
 
 Your response must be ONLY the text of the single follow-up question.`;
 
-    const result = await model.generateContent(prompt);
-    const questionText = result.response.text().trim();
+    let questionText = "";
+
+    if (gApiKey) {
+      const genAI = new GoogleGenerativeAI(gApiKey);
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const result = await model.generateContent(prompt);
+      questionText = result.response.text().trim();
+    } else if (oApiKey) {
+      const openai = new OpenAI({ apiKey: oApiKey });
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: prompt }]
+      });
+      questionText = response.choices[0].message.content?.trim() || "";
+    } else if (aApiKey) {
+      const anthropic = new Anthropic({ apiKey: aApiKey });
+      const response = await anthropic.messages.create({
+        model: "claude-3-haiku-20240307",
+        max_tokens: 150,
+        messages: [{ role: "user", content: prompt }]
+      });
+      questionText = (response.content[0] as any).text.trim();
+    }
 
     return NextResponse.json({ question: questionText });
   } catch (error: any) {

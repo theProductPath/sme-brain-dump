@@ -21,7 +21,7 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
   const [keys, setKeys] = useState({
     elevenLabsKey: "",
     agentId: "",
-    geminiKey: "",
+    geminiKey: "", openAiKey: "", anthropicKey: "",
   });
 
   const [useBackupMode, setUseBackupMode] = useState<boolean>(false);
@@ -58,11 +58,15 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
       const elKey = localStorage.getItem("tpp_elevenlabs_key") || "";
       const elAgent = localStorage.getItem("tpp_elevenlabs_agent") || "";
       const gemKey = localStorage.getItem("tpp_gemini_key") || "";
+      const openaiKey = localStorage.getItem("tpp_openai_key") || "";
+      const anthropicKey = localStorage.getItem("tpp_anthropic_key") || "";
       
       setKeys({
         elevenLabsKey: elKey,
         agentId: elAgent,
         geminiKey: gemKey,
+        openAiKey: openaiKey,
+        anthropicKey: anthropicKey,
       });
 
       // Decide if we default to backup (Gemini Flash) mode
@@ -99,17 +103,17 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
       // message.source is either 'user' or 'agent'
       const role = message.source === "user" ? "SME" : "AI";
       // Ignore partial/non-final speech updates to prevent cluttering
-      if (message.source === "user" && !message.isFinal) return;
+      if (message.source === "user" && !(message as any).isFinal) return;
 
       setMessages((prev) => [
         ...prev.filter(m => m.text !== "..."), // remove typing placeholder
         { role, text: message.message }
       ]);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error("ElevenLabs Error:", error);
       setStatusText("Connection Error");
-      setMessages((prev) => [...prev, { role: "system", text: `Connection Error: ${error.message || "Failed call."}` }]);
+      setMessages((prev) => [...prev, { role: "system", text: `Connection Error: ${error?.message || error || "Failed call."}` }]);
       setSessionActive(false);
     },
   });
@@ -170,7 +174,8 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
         setSessionActive(false);
         finalTranscript = [...messages];
       } else {
-        const id = await conversation.endSession();
+        const id = conversation.getId();
+        conversation.endSession();
         setSessionActive(false);
         setStatusText("Session completed.");
 
@@ -224,6 +229,8 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
           body: JSON.stringify({
             transcript: updatedMessages,
             geminiApiKey: keys.geminiKey,
+            openAiApiKey: keys.openAiKey,
+            anthropicApiKey: keys.anthropicKey,
             customRoleInfo: `${answers.roleName}: ${answers.contextInfo}`
           }),
         });
@@ -279,6 +286,8 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
         body: JSON.stringify({
           transcript: transcript.map(m => ({ role: m.role, text: m.text })),
           geminiApiKey: keys.geminiKey,
+          openAiApiKey: keys.openAiKey,
+          anthropicApiKey: keys.anthropicKey,
           customRoleInfo: `${answers.roleName}: ${answers.contextInfo}`
         }),
       });
