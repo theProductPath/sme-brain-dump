@@ -71,7 +71,7 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
 
       // Decide if we default to backup (Gemini Flash) mode
       if (!elKey || !elAgent) {
-        setUseBackupMode(true); alert("ElevenLabs Connection Failed: " + err.message);
+        setUseBackupMode(true);
       }
     }
   }, []);
