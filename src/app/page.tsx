@@ -25,7 +25,7 @@ export default function Dashboard() {
           <div className="brand-section">
             <div className="brand-icon">🧠</div>
             <div className="brand-name">
-              SME<span>BrainDump</span>
+              SME<span>Brain</span>Dump
             </div>
           </div>
 
