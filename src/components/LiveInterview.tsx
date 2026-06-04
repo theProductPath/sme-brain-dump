@@ -471,7 +471,7 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
                   className="input-textarea"
                   value={answers.currentInput}
                   onChange={(e) => setAnswers(prev => ({ ...prev, currentInput: e.target.value }))}
-                  placeholder="You can simply speak to the agent, or type a response and send..."
+                  placeholder="You can simply speak to the agent, or type a response and submit..."
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
@@ -479,25 +479,18 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
                     }
                   }}
                 />
-                <button
-                  className="btn btn-primary btn-sm"
-                  style={{ marginLeft: "8px", alignSelf: "center", padding: "12px 16px", borderRadius: "8px" }}
-                  onClick={handleSendElevenLabsText}
-                  disabled={!answers.currentInput.trim()}
-                >
-                  Send
-                </button>
+                
               </div>
             </div>
 
           </div>
 
           <div style={{ display: "flex", justifyContent: "space-between", marginTop: "24px" }}>
-            <button className="btn btn-ghost" onClick={restartLive}>
-              Cancel Call
-            </button>
-            <button className="btn btn-primary" onClick={endSession} style={{ background: "var(--color-error)" }}>
+            <button className="btn btn-ghost" onClick={endSession} style={{ color: "var(--color-error)", fontWeight: 600 }}>
               🔴 Hang Up &amp; Compile Brief
+            </button>
+            <button className="btn btn-primary" onClick={handleSendElevenLabsText} disabled={!answers.currentInput.trim()}>
+              Submit &rarr;
             </button>
           </div>
         </div>
