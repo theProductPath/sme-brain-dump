@@ -1175,3 +1175,139 @@ body {
   color: var(--color-text-muted);
   font-style: italic;
 }
+
+
+/* ─── DYNAMIC HTML STYLING (For raw HTML from Gemini) ────────────────────────── */
+.doc-canvas h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.doc-canvas h2 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #475569;
+  margin: 32px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e8f0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.doc-canvas h2:first-of-type {
+  margin-top: 0;
+}
+
+.doc-canvas h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 24px 0 8px;
+}
+
+.doc-canvas h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.doc-canvas p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: #334155;
+  margin-bottom: 16px;
+}
+
+.doc-canvas strong {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.doc-canvas ul {
+  list-style: none;
+  margin-bottom: 20px;
+  padding-left: 0;
+}
+
+.doc-canvas ul li {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #334155;
+  padding: 6px 0 6px 20px;
+  position: relative;
+}
+
+.doc-canvas ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.doc-canvas ol {
+  list-style: none;
+  counter-reset: doc-counter;
+  margin-bottom: 20px;
+  padding-left: 0;
+}
+
+.doc-canvas ol li {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #334155;
+  padding: 6px 0 6px 36px;
+  position: relative;
+  counter-increment: doc-counter;
+}
+
+.doc-canvas ol li::before {
+  content: counter(doc-counter) ".";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: 12px;
+  background: rgba(147, 51, 234, 0.1);
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+}
+
+.doc-canvas table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.doc-canvas th {
+  text-align: left;
+  padding: 12px 16px;
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.doc-canvas td {
+  padding: 12px 16px;
+  color: #334155;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+.doc-canvas tr:last-child td {
+  border-bottom: none;
+}
+
+.doc-canvas tr:hover td {
+  background: #f8fafc;
+}
