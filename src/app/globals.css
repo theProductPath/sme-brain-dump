@@ -1104,6 +1104,16 @@ body {
 }
 
 /* ─── PRINTING SUPPORT ───────────────────────────────── */
+
+/* ─── TAB CONTENT (Screen vs Print) ────────────────────────── */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
 @media print {
   body {
     background: #ffffff !important;

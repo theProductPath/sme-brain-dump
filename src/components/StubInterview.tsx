@@ -475,8 +475,7 @@ export function StubInterview({ onRestartGlobal }: StubInterviewProps) {
           <div className="doc-canvas-wrapper">
             <div className="doc-canvas">
               {/* TAB CONTENT: Successor Brief */}
-              {activeTab === "successor" && (
-                <div>
+              <div className={`tab-content ${activeTab === "successor" ? "active" : ""}`}>
                   <div className="doc-why-banner">
                     Why this exists: A high-level orientation for whoever steps into Sally's pipeline responsibilities — written for someone smart who doesn't know the specifics yet.
                   </div>
@@ -516,11 +515,9 @@ export function StubInterview({ onRestartGlobal }: StubInterviewProps) {
                     <li>Review the legacy ETL config with Sally before her transition is complete.</li>
                   </ul>
                 </div>
-              )}
 
               {/* TAB CONTENT: FAQ */}
-              {activeTab === "faq" && (
-                <div>
+              <div className={`tab-content ${activeTab === "faq" ? "active" : ""}`}>
                   <div className="doc-why-banner">
                     Why this exists: The questions Sally's successor — or whoever covers her pipeline — will almost certainly ask. Answered in her own words.
                   </div>
@@ -562,11 +559,9 @@ export function StubInterview({ onRestartGlobal }: StubInterviewProps) {
                     </p>
                   </div>
                 </div>
-              )}
 
               {/* TAB CONTENT: Decision Log */}
-              {activeTab === "decisions" && (
-                <div>
+              <div className={`tab-content ${activeTab === "decisions" ? "active" : ""}`}>
                   <div className="doc-why-banner">
                     Why this exists: The judgment calls and institutional decisions that lived in Sally's head — made visible so the next person doesn't have to reinvent them.
                   </div>
@@ -610,11 +605,9 @@ export function StubInterview({ onRestartGlobal }: StubInterviewProps) {
                     </tbody>
                   </table>
                 </div>
-              )}
 
               {/* TAB CONTENT: Runbook */}
-              {activeTab === "runbook" && (
-                <div>
+              <div className={`tab-content ${activeTab === "runbook" ? "active" : ""}`}>
                   <div className="doc-why-banner">
                     Why this exists: Step-by-step operational procedures for the recurring tasks Sally owns — so someone covering can execute without guessing.
                   </div>
@@ -636,7 +629,6 @@ export function StubInterview({ onRestartGlobal }: StubInterviewProps) {
                     </li>
                   </ol>
                 </div>
-              )}
             </div>
           </div>
 

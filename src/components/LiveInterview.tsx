@@ -671,41 +671,33 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
 
           <div className="doc-canvas-wrapper">
             <div className="doc-canvas">
-              {activeTab === "successor" && (
-                <div>
+              <div className={`tab-content ${activeTab === "successor" ? "active" : ""}`}>
                   <div className="doc-why-banner">
                     Why this exists: A high-level orientation brief synthesized dynamically from your conversation turns.
                   </div>
                   <div dangerouslySetInnerHTML={{ __html: documents.brief }} />
                 </div>
-              )}
 
-              {activeTab === "faq" && (
-                <div>
+                <div className={`tab-content ${activeTab === "faq" ? "active" : ""}`}>
                   <div className="doc-why-banner">
                     Why this exists: Frequently asked questions and answers formulated exactly in your own expert voice.
                   </div>
                   <div dangerouslySetInnerHTML={{ __html: documents.faq }} />
                 </div>
-              )}
 
-              {activeTab === "decisions" && (
-                <div>
+                <div className={`tab-content ${activeTab === "decisions" ? "active" : ""}`}>
                   <div className="doc-why-banner">
                     Why this exists: Judgment calls and unwritten decisions made visible for the successor covering this role.
                   </div>
                   <div dangerouslySetInnerHTML={{ __html: documents.decisions }} />
                 </div>
-              )}
 
-              {activeTab === "runbook" && (
-                <div>
+                <div className={`tab-content ${activeTab === "runbook" ? "active" : ""}`}>
                   <div className="doc-why-banner">
                     Why this exists: Step-by-step procedures detailing recurring processes and edge-case incidents.
                   </div>
                   <div dangerouslySetInnerHTML={{ __html: documents.runbook }} />
                 </div>
-              )}
             </div>
           </div>
 
