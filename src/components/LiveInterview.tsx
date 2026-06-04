@@ -492,7 +492,10 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
 
           </div>
 
-          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "16px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginTop: "24px" }}>
+            <button className="btn btn-ghost" onClick={restartLive}>
+              Cancel Call
+            </button>
             <button className="btn btn-primary" onClick={endSession} style={{ background: "var(--color-error)" }}>
               🔴 Hang Up &amp; Compile Brief
             </button>
