@@ -27,6 +27,15 @@ It generates a comprehensive Knowledge Package including:
 - **Decision Log**: Why things were built the way they were.
 - **Runbook**: Step-by-step processes for critical tasks.
 
+
+## Key Features
+- **ElevenLabs WebRTC Conversational AI:** Real-time, ultra-low latency voice interview mode using ElevenLabs.
+- **Dynamic Variables Mapping:** Seamlessly passes `{{roleName}}` and `{{contextInfo}}` into the ElevenLabs agent's system prompt and greeting.
+- **Hybrid Voice & Text Input:** Allows the SME to speak naturally or type technical details during the live ElevenLabs session.
+- **Gemini Dynamic STT Backup:** If ElevenLabs fails or keys are missing, the app elegantly falls back to a Gemini-driven text-to-speech & speech-to-text backup interview loop.
+- **Fault-Tolerant Synthesis (Multi-LLM):** Compiles the handoff documents automatically. If the primary LLM (Gemini) fails or rate-limits, it cascades sequentially to OpenAI, then Anthropic.
+- **Client-Side Key Management:** API keys (ElevenLabs, Gemini, OpenAI, Anthropic) are stored locally and securely in the browser's `localStorage`.
+
 ## Repository Structure
 ```text
 sme-brain-dump/
