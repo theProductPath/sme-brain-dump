@@ -149,7 +149,7 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
       const { signed_url } = await res.json();
 
       setStatusText("Connecting WebRTC audio...");
-      await conversation.startSession({ signedUrl: signed_url });
+      await conversation.startSession({ signedUrl: signed_url, dynamicVariables: { roleName: answers.roleName, contextInfo: answers.contextInfo } });
       
       setSessionActive(true);
       setStatusText("Voice Session Live");
