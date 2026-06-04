@@ -335,7 +335,7 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
       console.error(err);
       setStatusText("Synthesis failed");
       setDocuments({
-        brief: "<h1>Handoff Brief</h1><p>Synthesis failed. Please review your Gemini API Key in the settings drawer and restart.</p>",
+        brief: "<h1>Handoff Brief</h1><p>Synthesis failed. Please review your LLM API Keys in the settings drawer and try again.</p>",
         faq: "<h1>FAQ</h1><p>Generation incomplete.</p>",
         decisions: "<h1>Decision Log</h1><p>Generation incomplete.</p>",
         runbook: "<h1>Runbook</h1><p>Generation incomplete.</p>",

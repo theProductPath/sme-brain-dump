@@ -42,27 +42,51 @@ ${transcriptString}
 Your response must be ONLY the text of the single follow-up question.`;
 
     let questionText = "";
+    let lastError: any = null;
 
-    if (gApiKey) {
-      const genAI = new GoogleGenerativeAI(gApiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-      const result = await model.generateContent(prompt);
-      questionText = result.response.text().trim();
-    } else if (oApiKey) {
-      const openai = new OpenAI({ apiKey: oApiKey });
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: prompt }]
-      });
-      questionText = response.choices[0].message.content?.trim() || "";
-    } else if (aApiKey) {
-      const anthropic = new Anthropic({ apiKey: aApiKey });
-      const response = await anthropic.messages.create({
-        model: "claude-3-haiku-20240307",
-        max_tokens: 150,
-        messages: [{ role: "user", content: prompt }]
-      });
-      questionText = (response.content[0] as any).text.trim();
+    if (gApiKey && !questionText) {
+      try {
+        const genAI = new GoogleGenerativeAI(gApiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const result = await model.generateContent(prompt);
+        questionText = result.response.text().trim();
+      } catch (e) {
+        console.error("Gemini failed:", e);
+        lastError = e;
+      }
+    }
+    
+    if (oApiKey && !questionText) {
+      try {
+        const openai = new OpenAI({ apiKey: oApiKey });
+        const response = await openai.chat.completions.create({
+          model: "gpt-4o-mini",
+          messages: [{ role: "user", content: prompt }]
+        });
+        questionText = response.choices[0].message.content?.trim() || "";
+      } catch (e) {
+        console.error("OpenAI failed:", e);
+        lastError = e;
+      }
+    }
+    
+    if (aApiKey && !questionText) {
+      try {
+        const anthropic = new Anthropic({ apiKey: aApiKey });
+        const response = await anthropic.messages.create({
+          model: "claude-3-haiku-20240307",
+          max_tokens: 150,
+          messages: [{ role: "user", content: prompt }]
+        });
+        questionText = (response.content[0] as any).text.trim();
+      } catch (e) {
+        console.error("Anthropic failed:", e);
+        lastError = e;
+      }
+    }
+
+    if (!questionText) {
+      throw new Error("All configured AI models failed or no keys were provided. Last error: " + (lastError?.message || "Unknown"));
     }
 
     return NextResponse.json({ question: questionText });

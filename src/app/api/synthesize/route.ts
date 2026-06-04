@@ -48,36 +48,60 @@ You MUST respond with a JSON object matching this exact TypeScript structure:
 Format the HTML cleanly using standard tags: <h1>, <h2>, <p>, <ul>, <ol>, <li>, <strong>, <em>, <table>, <tr>, <th>, <td>. Do not include raw markdown formatting inside the HTML strings, use raw HTML tags instead. Make the output matches the highly polished layout of tPP documents.`;
 
     let responseText = "";
+    let lastError: any = null;
 
-    if (gApiKey) {
-      const genAI = new GoogleGenerativeAI(gApiKey);
-      const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
-        generationConfig: { responseMimeType: "application/json" },
-      });
-      const prompt = `${systemPrompt}\n\nTRANSCRIPT:\n${transcriptString}`;
-      const result = await model.generateContent(prompt);
-      responseText = result.response.text();
-    } else if (oApiKey) {
-      const openai = new OpenAI({ apiKey: oApiKey });
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o",
-        response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: `TRANSCRIPT:\n${transcriptString}` }
-        ]
-      });
-      responseText = response.choices[0].message.content || "";
-    } else if (aApiKey) {
-      const anthropic = new Anthropic({ apiKey: aApiKey });
-      const prompt = `${systemPrompt}\n\nReturn strictly valid JSON and nothing else.\n\nTRANSCRIPT:\n${transcriptString}`;
-      const response = await anthropic.messages.create({
-        model: "claude-3-5-sonnet-20240620",
-        max_tokens: 4000,
-        messages: [{ role: "user", content: prompt }]
-      });
-      responseText = (response.content[0] as any).text;
+    if (gApiKey && !responseText) {
+      try {
+        const genAI = new GoogleGenerativeAI(gApiKey);
+        const model = genAI.getGenerativeModel({
+          model: "gemini-1.5-flash",
+          generationConfig: { responseMimeType: "application/json" },
+        });
+        const prompt = `${systemPrompt}\n\nTRANSCRIPT:\n${transcriptString}`;
+        const result = await model.generateContent(prompt);
+        responseText = result.response.text();
+      } catch (e) {
+        console.error("Gemini failed:", e);
+        lastError = e;
+      }
+    }
+    
+    if (oApiKey && !responseText) {
+      try {
+        const openai = new OpenAI({ apiKey: oApiKey });
+        const response = await openai.chat.completions.create({
+          model: "gpt-4o",
+          response_format: { type: "json_object" },
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: `TRANSCRIPT:\n${transcriptString}` }
+          ]
+        });
+        responseText = response.choices[0].message.content || "";
+      } catch (e) {
+        console.error("OpenAI failed:", e);
+        lastError = e;
+      }
+    }
+    
+    if (aApiKey && !responseText) {
+      try {
+        const anthropic = new Anthropic({ apiKey: aApiKey });
+        const prompt = `${systemPrompt}\n\nReturn strictly valid JSON and nothing else.\n\nTRANSCRIPT:\n${transcriptString}`;
+        const response = await anthropic.messages.create({
+          model: "claude-3-5-sonnet-20240620",
+          max_tokens: 4000,
+          messages: [{ role: "user", content: prompt }]
+        });
+        responseText = (response.content[0] as any).text;
+      } catch (e) {
+        console.error("Anthropic failed:", e);
+        lastError = e;
+      }
+    }
+
+    if (!responseText) {
+      throw new Error("All configured AI models failed or no keys were provided. Last error: " + (lastError?.message || "Unknown"));
     }
 
     try {
