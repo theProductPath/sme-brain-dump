@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useConversation } from "@elevenlabs/react";
+import { downloadArtifactsZip } from "@/utils/zipGenerator";
 
 interface LiveInterviewProps {
   onRestartGlobal?: () => void;
@@ -306,11 +307,11 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
     setSynthesisProgress(0);
     setShowOutputButton(false);
 
-    // Run simulated synthesis indicators
-    const progressSteps = [1, 2, 3, 4, 5, 6, 7];
+    // Run simulated synthesis indicators (stop at 6 until API finishes)
+    const progressSteps = [1, 2, 3, 4, 5, 6];
     progressSteps.forEach((step, idx) => {
       setTimeout(() => {
-        setSynthesisProgress(step);
+        setSynthesisProgress(prev => Math.max(prev, step));
       }, idx * 700);
     });
 
@@ -576,8 +577,12 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
       {/* ── STAGE 3: SYNTHESIS IN PROGRESS ── */}
       {backupStep === 4 && !hasFinishedPackage && (
         <div className="card processing-box">
-          <div className="processing-icon">⚡</div>
-          <h2>Building Custom Knowledge Package</h2>
+          {showOutputButton ? (
+            <div className="processing-icon" style={{ animation: "none", color: "var(--color-primary)" }}>✓</div>
+          ) : (
+            <div className="processing-icon">⚡</div>
+          )}
+          <h2>{showOutputButton ? "Knowledge Package Complete" : "Building Custom Knowledge Package"}</h2>
           <p style={{ color: "var(--color-text-muted)", fontSize: "14px" }}>
             Gemini Flash is structuring the conversation transcript intosuccessor-ready briefs...
           </p>
@@ -633,6 +638,9 @@ export function LiveInterview({ onRestartGlobal }: LiveInterviewProps) {
               <h2 style={{ fontSize: "18px", marginTop: "4px" }}>{answers.roleName} — Transition Package</h2>
             </div>
             <div style={{ display: "flex", gap: "8px" }}>
+              <button className="btn btn-sm btn-ghost" onClick={() => downloadArtifactsZip(answers.roleName || "SME", documents)}>
+                🗂️ Download ZIP
+              </button>
               <button className="btn btn-sm btn-ghost" onClick={() => window.print()}>
                 🖨️ PDF Handoff
               </button>

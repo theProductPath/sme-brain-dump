@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { downloadArtifactsZip } from "@/utils/zipGenerator";
 
 interface StubInterviewProps {
   onRestartGlobal?: () => void;
@@ -436,6 +437,17 @@ export function StubInterview({ onRestartGlobal }: StubInterviewProps) {
               <h2 style={{ fontSize: "18px", marginTop: "4px" }}>Sally Chen — Transition Package</h2>
             </div>
             <div style={{ display: "flex", gap: "8px" }}>
+              <button className="btn btn-sm btn-ghost" onClick={() => {
+                const dummyDocs = {
+                  brief: "<h1>Sally Chen — Data Pipeline Ownership</h1><p>Transition Brief prepared from AI interview...</p>",
+                  faq: "<h1>Sally Chen FAQ</h1><p>Q: What's the most important thing? A: Monday ingestion run.</p>",
+                  decisions: "<h1>Sally Chen Decision Log</h1><p>Timestamp offset in ETL config: Leave 6-hour offset in place.</p>",
+                  runbook: "<h1>Runbook: Monday Data Ingestion Run</h1><ol><li>Pre-run check...</li></ol>"
+                };
+                downloadArtifactsZip("Sally Chen", dummyDocs);
+              }}>
+                🗂️ Download ZIP
+              </button>
               <button className="btn btn-sm btn-ghost" onClick={() => window.print()}>
                 🖨️ PDF Handoff
               </button>
